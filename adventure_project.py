@@ -17,13 +17,19 @@ def intro():
     printer("Rumor has it that a wicked enemy is somewhere around here, "
             "and has been terrifying the nearby village.")
     printer("...")
-    time.sleep(3)
+
+
+def valid_input(prompt, options):
+    while True:
+        response = input(prompt).lower()
+        if response in options:
+            return response
+        printer(f"The option '{response}' is invalid, retry.")
 
 
 def play_again():
-    printer("Would you like to play again, 'yes' or 'no'?")
-    rep = input()
-    if 'yes' in rep or 'play' in rep:
+    rep = valid_input("Want to play again, 'y' or 'n'?", ['y', 'n'])
+    if 'y' in rep:
         intro()
         game_detail()
     else:
@@ -39,7 +45,6 @@ def door1():   # fairie door
     if 'weapon' in items:
         if 'armor' in items:
             printer(f"You have the necessary items to fight the {monster}")
-            time.sleep(3)
             printer(f"after a prolonged battle, "
                     "you defeat the {monster} and saved the town")
             printer("The villagers are happy and named you their hero.")
@@ -47,7 +52,6 @@ def door1():   # fairie door
         else:
             printer("you enter a prolonged battle with only "
                     "weapon and no armor")
-            time.sleep(3)
             printer(f"The {monster} wins the battle as a result "
                     "of your lack of armor")
             printer("The villagers are sad")
@@ -55,7 +59,6 @@ def door1():   # fairie door
     elif 'armor' in items:
         if 'weapon' in items:
             print(f"You have the necessary items to fight the {monster}")
-            time.sleep(3)
             printer(f"after a prolonged battle, you defeat the {monster} "
                     "and saved the town")
             printer("The villagers are happy and named you their hero.")
@@ -63,7 +66,6 @@ def door1():   # fairie door
         else:
             printer("you enter a prolonged battle with only "
                     "armor and no weapon")
-            time.sleep(3)
             printer(f"The {monster} wins the battle as a result "
                     "of your lack of weapon")
             printer("The villagers are sad")
@@ -71,7 +73,8 @@ def door1():   # fairie door
     else:
         printer("You have neither weapon nor armor, are you "
                 "sure you want to proceed?")
-        rep = input("Enter '1' to proceed or '2' to go back outside\n")
+        rep = valid_input("Enter '1' to proceed or '2' to go back outside\n",
+                          ['1', '2'])
         if rep == '1':
             printer(f"you come face to face with the {monster} "
                     "who wastes no time in killing you")
@@ -86,12 +89,12 @@ def door2():  # armor door
     global items
     printer("You have entered the armor room")
     printer("You find an armor behind the door")
-    take = input("Take it or not, 'yes or 'no' ").lower()
-    if 'yes' in take:
+    take = valid_input("Take it or not, 'y' or 'n' ", ['y', 'n'])
+    if 'y' in take:
         items.append('armor')
         printer("You have taken and worn the armor")
         select_door()
-    else:
+    elif 'n' in take:
         printer("You have choosen not to wear the armor")
         select_door()
 
@@ -100,28 +103,26 @@ def door3():  # weapon door
     global items
     printer("You have entered the weapon room")
     printer("You find a weapon behind the door")
-    take = input("Take it or not, 'yes' or 'no' ").lower()
-    if 'yes' in take:
+    take = valid_input("Take it or not, 'y' or 'n' ", ['y', 'n'])
+    if 'y' in take:
         items.append('weapon')
         printer("you have taken the weapon")
         select_door()
-    else:
-        printer("You have choosen not to take the weapon")
+    elif 'n' in take:
+        printer("you have choosen not to take the weapon")
         select_door()
 
 
 def select_door():
-    printer("Which door do you want to open?, '1' or '2' or '3'")
-    response = input()
-    if response == '1':
+    response = valid_input("Which door do you want to open?, "
+                           "'1' or '2' or '3'\n",
+                           ['1', '2', '3'])
+    if '1' in response:
         door1()
-    elif response == '2':
+    elif '2' in response:
         door2()
-    elif response == '3':
+    elif '3' in response:
         door3()
-    else:
-        printer("we dont have that door here, look for it elsewhere")
-        select_door()
 
 
 def game_detail():
